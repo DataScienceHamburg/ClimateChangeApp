@@ -1,6 +1,6 @@
+from pathlib import Path
 from shiny import App, render, ui, reactive
 import pandas as pd
-from pathlib import Path
 from shinywidgets import output_widget, register_widget, reactive_read
 import ipyleaflet as L
 from plot_funs import plot_country, plot_world
@@ -15,6 +15,8 @@ countries = temperatures['Country'].unique().tolist()
 temp_years = temperatures['Year'].unique()
 temp_year_min = temp_years.min()
 temp_year_max = temp_years.max()
+
+static_content_url = "https://raw.githubusercontent.com/DataScienceHamburg/ShinyForPythonMaterial/main/40_App_ClimateChange/final/www"
 
 # CSS 
 font_style = "font-weight: 100"
@@ -42,11 +44,11 @@ app_ui = ui.page_fluid(
     ),
     ui.row(
         ui.column(6, ui.row(
-            ui.column(2, ui.img(src="developer.png", width="32px"), style="text-align: center;"),
+            ui.column(2, ui.img(src=f"{static_content_url}/developer.png", width="32px"), style="text-align: center;"),
             ui.column(10, ui.p("Bert Gollnick", style=font_style)),
         ),
                   ui.row(
-                ui.column(2, ui.img(src="address2.png", width="32px"), style="text-align: center;"),
+                ui.column(2, ui.img(src=f"{static_content_url}/address2.png", width="32px"), style="text-align: center;"),
                 ui.column(10, ui.p('Redderblock 28', style = font_style))
                 ),ui.row(
                 ui.column(2, ),
@@ -57,12 +59,12 @@ app_ui = ui.page_fluid(
                 ui.column(10, ui.p('Germany', style = font_style))
                 ),
                       ui.row(
-                ui.column(2, ui.img(src="mail2.png", width="32px"), style="text-align: center;"),
+                ui.column(2, ui.img(src=f"{static_content_url}/mail2.png", width="32px"), style="text-align: center;"),
                 ui.column(10, ui.a(ui.p('bert.gollnick@posteo.net'), href="mailto:bert.gollnick@posteo.net", style = font_style))
                 ),
                   
                   ),
-        ui.column(6, ui.a(ui.img(src="course_logo_300x169.png"), href="https://www.udemy.com"), style="text-align:center;")
+        ui.column(6, ui.a(ui.img(src=f"{static_content_url}/course_logo_300x169.png"), href="https://www.udemy.com"), style="text-align:center;")
     ), 
     ui.p("Data Source: Sevgi Sy. Temperature Change, 2022", ui.a("Kaggle Dataset", href= "https://www.kaggle.com/datasets/sevgisarac/temperature-change"), ", ",ui.a("License: Attribution 3.0 IGO (CC BY 3.0 IGO)", href="https://creativecommons.org/licenses/by/3.0/igo/"), style = font_style),
     style="background-color:#fff"
@@ -95,10 +97,10 @@ def server(input, output, session):
     @output
     @render.ui
     def color_map():
-        img = ui.img(src="colormap.png")
+        img = ui.img(src=f"{static_content_url}/colormap.png")
         return img
     
 
 
-www_dir = Path(__file__).parent / "www"
-app = App(app_ui, server, static_assets=www_dir)
+# www_dir = Path(__file__).parent / "www" 
+app = App(app_ui, server)
